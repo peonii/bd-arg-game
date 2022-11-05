@@ -1,4 +1,7 @@
+use anyhow::{Result, anyhow};
 use raylib::prelude::*;
+
+use crate::collision::instances::BOXES;
 
 pub struct Player {
     x: i32,
@@ -25,28 +28,56 @@ impl Player {
     /// This function handles movement with arrow keys
     /// 
     /// NOTE: We are not going to add support for WASD because why would we
-    fn arrow_movement(&mut self, rl: &RaylibHandle) {
+    fn arrow_movement(&mut self, rl: &RaylibHandle) -> Result<()> {
+        let mut new_x = self.x;
+        let mut new_y = self.y;
+
         if rl.is_key_down(KeyboardKey::KEY_DOWN) {
-            self.move_self(self.x, self.y + 1);
+            new_y += 1;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_UP) {
-            self.move_self(self.x, self.y - 1);
+            new_y -= 1;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
-            self.move_self(self.x + 1, self.y);
+            new_x += 1;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
-            self.move_self(self.x - 1, self.y);
+            new_x -= 1;
         }
+
+        let boxes = match BOXES.lock() {
+            Ok(b) => b,
+            Err(_) => return Err(anyhow!("Error locking BOXES mutex"))
+        };
+
+        for cb in boxes.iter() {
+            if cb.collides_with(new_x, new_y) {
+                return Ok(())
+            }
+        }
+
+        self.move_self(new_x, new_y);
+
+        Ok(())
+    }
+
+    pub fn get_x(&self) -> i32 {
+        self.x
+    }
+
+    pub fn get_y(&self) -> i32 {
+        self.y
     }
 
     /// Main update function for the player
-    pub fn update(&mut self, drawing: &mut RaylibDrawHandle) {
-        self.arrow_movement(drawing);
+    pub fn update(&mut self, drawing: &mut RaylibDrawHandle) -> Result<()> {
+        self.arrow_movement(drawing)?;
 
         drawing.draw_circle(self.x, self.y, 15., Color::BLACK);
+
+        Ok(())
     }
 }

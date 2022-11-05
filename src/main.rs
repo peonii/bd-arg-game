@@ -7,6 +7,8 @@ fn main() -> Result<()> {
         .title(":)")
         .build();
 
+    bd_arg_game::init(&mut rl, &thread)?;
+
     while !rl.window_should_close() {
         update(&mut rl, &thread)?;
     }
