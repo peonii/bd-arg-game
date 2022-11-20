@@ -1,6 +1,6 @@
 levels:
   - id: start
-    bg:
+    bg: bg_sunny_school.png
     starting_coords:
       x: 50
       y: 50

@@ -38,8 +38,4 @@ impl CollisionBox {
 
         false
     }
-
-    pub fn draw(&self, drawing: &mut RaylibDrawHandle) {
-        drawing.draw_rectangle(self.x, self.y, self.width, self.height, Color::BLACK);
-    }
 }

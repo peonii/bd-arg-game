@@ -36,19 +36,5 @@ pub fn update(rl: &mut RaylibHandle, thread: &RaylibThread) -> Result<()> {
         player.update(&mut drawing)?;
     }
 
-    {
-        let boxes = match BOXES.lock() {
-            Ok(b) => b,
-            Err(_) => return Err(anyhow!("Error locking BOXES mutex!"))
-        };
-
-        for cb in boxes.iter() {
-            cb.draw(&mut drawing);
-        }
-    }
-
-    
-
-
     Ok(())
 }
