@@ -1,7 +1,8 @@
 use anyhow::{Result, anyhow};
+use rust_embed::EmbeddedFile;
 use serde::{Serialize, Deserialize};
 
-use crate::{player::data::Player, collision::instances::BOXES};
+use crate::{player::data::Player, collision::instances::BOXES, map::{instances::CURRENT_LEVEL, image::GameImage}};
 
 use super::{asset::LevelAsset, instances::{LEVELS, LEVELS_LOAD}};
 #[derive(Serialize, Deserialize)]
@@ -17,7 +18,14 @@ impl Levels {
                 Err(_) => return Err(anyhow!(""))
             };
 
-            let lv_str: Self = serde_yaml::from_str(LEVELS_LOAD)?;
+            let mut lv_str: Self = serde_yaml::from_str(LEVELS_LOAD)?;
+
+            for level in lv_str.levels.iter_mut() {
+                level.bg_bytes = match GameImage::get(&level.bg) {
+                    Some(i) => Some(Box::new(i)),
+                    None => return Err(anyhow!("Error getting background!"))
+                };
+            }
 
             *levels = lv_str.levels
         }
@@ -39,7 +47,10 @@ pub struct Level {
     id: String,
     bg: String,
     starting_coords: LevelCoords,
-    assets: Vec<LevelAsset>
+    assets: Vec<LevelAsset>,
+
+    #[serde(skip)]
+    bg_bytes: Option<Box<EmbeddedFile>>
 }
 
 impl Level {
@@ -66,6 +77,13 @@ impl Level {
                 for asset in &level.assets {
                     asset.load()?;
                 }
+
+                let mut current = match CURRENT_LEVEL.lock() {
+                    Ok(l) => l,
+                    Err(_) => return Err(anyhow!("Failed to lock CURRENT_LEVEL mutex!"))
+                };
+
+                *current = &level.bg_bytes;
 
                 player.move_to(level.starting_coords.x, level.starting_coords.y);
             }
