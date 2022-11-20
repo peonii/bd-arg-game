@@ -1,7 +1,6 @@
 use anyhow::{Result, anyhow};
 use raylib::prelude::*;
 
-
 use super::instances::BOXES;
 
 #[derive(Clone)]
@@ -9,13 +8,14 @@ pub struct CollisionBox {
     x: i32,
     y: i32,
     width: i32,
-    height: i32
+    height: i32,
+    pub portal_to: String
 }
 
 impl CollisionBox {
-    pub fn new(x: i32, y: i32, width: i32, height: i32) -> Self {
+    pub fn new(x: i32, y: i32, width: i32, height: i32, portal_to: String) -> Self {
         Self {
-            x, y, width, height
+            x, y, width, height, portal_to
         }
     }
 
@@ -30,10 +30,10 @@ impl CollisionBox {
         Ok(())
     }
 
-    pub fn collides_with(&self, x: i32, y: i32) -> bool {
-        if (x > self.x && x < (self.x + self.width)) && 
-            (y > self.y && y < (self.y + self.height)) {
-            return true;
+    pub fn collides_with(&self, x: i32, y: i32, width: i32, height: i32) -> bool {
+        if (x + width > self.x && x - width < (self.x + self.width)) && 
+            (y + height > self.y && y - height < (self.y + self.height)) {
+                return true;
         }
 
         false

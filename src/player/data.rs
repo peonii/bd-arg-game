@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use raylib::prelude::*;
 
-use crate::collision::instances::BOXES;
+use crate::{collision::instances::BOXES, map::level::Level};
 
 pub struct Player {
     x: i32,
@@ -48,18 +48,32 @@ impl Player {
             new_x -= 1;
         }
 
-        let boxes = match BOXES.lock() {
-            Ok(b) => b,
-            Err(_) => return Err(anyhow!("Error locking BOXES mutex"))
-        };
+        let mut new_area = String::new();
 
-        for cb in boxes.iter() {
-            if cb.collides_with(new_x, new_y) {
-                return Ok(())
+        {
+            let boxes = match BOXES.lock() {
+                Ok(b) => b,
+                Err(_) => return Err(anyhow!("Error locking BOXES mutex"))
+            };
+
+
+            for cb in boxes.iter() {
+                if cb.collides_with(new_x, new_y, 15, 15) {
+                    if cb.portal_to.is_empty() {
+                        return Ok(())
+                    } else {
+                        new_area = cb.portal_to.clone();
+                    }
+                }
             }
         }
 
-        self.move_self(new_x, new_y);
+
+        if !new_area.is_empty() {
+            Level::load(&new_area, self)?;
+        } else {
+            self.move_self(new_x, new_y);
+        }
 
         Ok(())
     }
@@ -70,6 +84,11 @@ impl Player {
 
     pub fn get_y(&self) -> i32 {
         self.y
+    }
+
+    pub fn move_to(&mut self, x: i32, y: i32) {
+        self.x = x;
+        self.y = y;
     }
 
     /// Main update function for the player

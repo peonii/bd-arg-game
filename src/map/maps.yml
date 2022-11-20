@@ -1,0 +1,28 @@
+levels:
+  - id: start
+    bg:
+    starting_coords:
+      x: 50
+      y: 50
+    assets:
+      - x: 10
+        y: 10
+        width: 20
+        height: 20
+        connector_to: two
+      - x: 0
+        y: 0
+        width: 1000
+        height: 0
+        connector_to:
+  - id: two
+    bg:
+    starting_coords:
+      x: 50
+      y: 500
+    assets:
+      - x: 10
+        y: 10
+        width: 20
+        height: 20
+        connector_to: start

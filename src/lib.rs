@@ -1,19 +1,21 @@
 use anyhow::{Result, anyhow};
-use collision::{collbox::CollisionBox, instances::BOXES};
+use collision::instances::BOXES;
+use map::level::Levels;
 use raylib::{RaylibHandle, RaylibThread, prelude::{Color, RaylibDraw}};
 
 mod player;
 mod collision;
+mod map;
 
 pub use player::instance::PLAYER;
 
 pub fn init(_rl: &mut RaylibHandle, _thread: &RaylibThread) -> Result<()> {
-    let new_cb = CollisionBox::new(0, 0, 10, 1000);
+    let mut player = match PLAYER.lock() {
+        Ok(p) => p,
+        Err(_) => return Err(anyhow!("Error locking PLAYER mutex!"))
+    };
 
-    CollisionBox::register(new_cb)?;
-
-    //TODO: add automatic collision box initialization from map file
-    /////// map file should preferably be a .json file with some nice format so i can ser/deser it easily
+    Levels::load(&mut player)?;
 
     Ok(())
 }
