@@ -1,5 +1,5 @@
 use anyhow::Result;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::collision::collbox::CollisionBox;
 
@@ -9,15 +9,21 @@ pub struct LevelAsset {
     y: i32,
     width: i32,
     height: i32,
-    connector_to: String
+    connector_to: String,
 }
 
 impl LevelAsset {
     pub fn load(&self) -> Result<()> {
-        let cb = CollisionBox::new(self.x, self.y, self.width, self.height, self.connector_to.clone());
-
-        CollisionBox::register(cb)?;
+        CollisionBox::new(
+            self.x,
+            self.y,
+            self.width,
+            self.height,
+            self.connector_to.clone(),
+        )
+        .register()?;
 
         Ok(())
     }
 }
+

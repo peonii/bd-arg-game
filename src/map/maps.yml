@@ -1,6 +1,6 @@
 levels:
   - id: start
-    bg: bg_sunny_school.png
+    bg: bg_day_school.png
     starting_coords:
       x: 50
       y: 50
@@ -16,7 +16,7 @@ levels:
         height: 0
         connector_to:
   - id: two
-    bg:
+    bg: bg_day_school.png
     starting_coords:
       x: 50
       y: 500

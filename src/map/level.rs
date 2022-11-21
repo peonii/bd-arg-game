@@ -1,13 +1,19 @@
-use anyhow::{Result, anyhow};
-use rust_embed::EmbeddedFile;
-use serde::{Serialize, Deserialize};
+use anyhow::{anyhow, Result};
+use serde::{Deserialize, Serialize};
 
-use crate::{player::data::Player, collision::instances::BOXES, map::{instances::CURRENT_LEVEL, image::GameImage}};
+use crate::{
+    collision::instances::BOXES,
+    map::{image::GameImage, instances::CURRENT_LEVEL},
+    player::data::Player,
+};
 
-use super::{asset::LevelAsset, instances::{LEVELS, LEVELS_LOAD}};
+use super::{
+    asset::LevelAsset,
+    instances::{LEVELS, LEVELS_LOAD},
+};
 #[derive(Serialize, Deserialize)]
 pub struct Levels {
-    levels: Vec<Level>
+    levels: Vec<Level>,
 }
 
 impl Levels {
@@ -15,19 +21,21 @@ impl Levels {
         {
             let mut levels = match LEVELS.lock() {
                 Ok(l) => l,
-                Err(_) => return Err(anyhow!(""))
+                Err(_) => return Err(anyhow!("")),
             };
 
-            let mut lv_str: Self = serde_yaml::from_str(LEVELS_LOAD)?;
+            let lv_str: Self = serde_yaml::from_str(LEVELS_LOAD)?;
 
+            /*
             for level in lv_str.levels.iter_mut() {
                 level.bg_bytes = match GameImage::get(&level.bg) {
                     Some(i) => Some(Box::new(i)),
-                    None => return Err(anyhow!("Error getting background!"))
+                    None => return Err(anyhow!("Error getting background!")),
                 };
             }
+            */
 
-            *levels = lv_str.levels
+            *levels = lv_str.levels;
         }
 
         Level::load("start", player)?;
@@ -39,7 +47,7 @@ impl Levels {
 #[derive(Serialize, Deserialize)]
 struct LevelCoords {
     x: i32,
-    y: i32
+    y: i32,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -48,9 +56,6 @@ pub struct Level {
     bg: String,
     starting_coords: LevelCoords,
     assets: Vec<LevelAsset>,
-
-    #[serde(skip)]
-    bg_bytes: Option<Box<EmbeddedFile>>
 }
 
 impl Level {
@@ -58,17 +63,18 @@ impl Level {
         println!("Loading level!");
         let levels = match LEVELS.lock() {
             Ok(l) => l,
-            Err(_) => return Err(anyhow!("Failed to lock LEVELS mutex!"))
+            Err(_) => return Err(anyhow!("Failed to lock LEVELS mutex!")),
         };
 
         println!("Loading...");
 
-        for level in levels.iter() {
+        let levels_iter = levels.iter();
+        for level in levels_iter {
             if level.id == name {
                 {
                     let mut boxes = match BOXES.lock() {
                         Ok(b) => b,
-                        Err(_) => return Err(anyhow!("Error locking BOXES mutex"))
+                        Err(_) => return Err(anyhow!("Error locking BOXES mutex")),
                     };
 
                     *boxes = vec![];
@@ -80,16 +86,21 @@ impl Level {
 
                 let mut current = match CURRENT_LEVEL.lock() {
                     Ok(l) => l,
-                    Err(_) => return Err(anyhow!("Failed to lock CURRENT_LEVEL mutex!"))
+                    Err(_) => return Err(anyhow!("Error locking CURRENT_LEVEL mutex")),
                 };
 
-                *current = &level.bg_bytes;
+                *current = match GameImage::get(&level.bg) {
+                    Some(i) => Some(Box::new(i)),
+                    None => return Err(anyhow!("Error getting background!")),
+                };
 
                 player.move_to(level.starting_coords.x, level.starting_coords.y);
+
+                break;
             }
         }
-
 
         Ok(())
     }
 }
+
