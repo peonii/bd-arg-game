@@ -31,19 +31,19 @@ impl Player {
         let mut new_y = self.y;
 
         if rl.is_key_down(KeyboardKey::KEY_DOWN) {
-            new_y += 1;
+            new_y += 3;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_UP) {
-            new_y -= 1;
+            new_y -= 3;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) {
-            new_x += 1;
+            new_x += 3;
         }
 
         if rl.is_key_down(KeyboardKey::KEY_LEFT) {
-            new_x -= 1;
+            new_x -= 3;
         }
 
         let mut new_area = String::new();
@@ -56,7 +56,7 @@ impl Player {
 
             let boxes_iter = boxes.iter();
             for cb in boxes_iter {
-                if cb.collides_with(new_x, new_y, 15, 15) {
+                if cb.collides_with(new_x, new_y, 35, 35) {
                     if cb.portal_to.is_empty() {
                         return Ok(());
                     }
@@ -91,9 +91,8 @@ impl Player {
     pub fn update(&mut self, drawing: &mut RaylibDrawHandle) -> Result<()> {
         self.arrow_movement(drawing)?;
 
-        drawing.draw_circle(self.x, self.y, 15., Color::BLACK);
+        drawing.draw_circle(self.x, self.y, 35., Color::BLACK);
 
         Ok(())
     }
 }
-

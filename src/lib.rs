@@ -8,7 +8,7 @@ use anyhow::{anyhow, Result};
 use map::{instances::CURRENT_LEVEL, level::Levels};
 use raylib::{
     prelude::{Color, RaylibDraw},
-    texture::Image,
+    texture::{Image, Texture2D},
     RaylibHandle, RaylibThread,
 };
 
@@ -42,28 +42,34 @@ pub fn init(_rl: &mut RaylibHandle, _thread: &RaylibThread) -> Result<()> {
 /// - When failing to load background (happens due to file not existing)
 /// - When failing to perform any logic
 pub fn update(rl: &mut RaylibHandle, thread: &RaylibThread) -> Result<()> {
-    let bg = match CURRENT_LEVEL.lock() {
-        Ok(p) => p,
-        Err(_) => return Err(anyhow!("Error locking CURRENT_LEVEL mutex!")), // please format your errors like this thank you
-    };
+    let mut tex: Texture2D;
+    {
+        let bg = match CURRENT_LEVEL.lock() {
+            Ok(p) => p,
+            Err(_) => return Err(anyhow!("Error locking CURRENT_LEVEL mutex!")), // please format your errors like this thank you
+        };
 
-    let bg_ref = bg.as_ref();
-    let actual_file: &EmbeddedFile = match bg_ref {
-        Some(e) => e,
-        None => return Err(anyhow!("Failed to load bg!")),
-    }; // we CAN do this as we are 100% sure this is a correct file
-       //
-    let data_size = actual_file.data.len().try_into()?;
+        let bg_ref = bg.as_ref();
+        let actual_file: &EmbeddedFile = match bg_ref {
+            Some(e) => e,
+            None => return Err(anyhow!("Failed to load bg!")),
+        }; // we CAN do this as we are 100% sure this is a correct file
+           //
+        let data_size = actual_file.data.len().try_into()?;
 
-    let img =
-        match Image::load_image_from_mem(".png", &Vec::from(actual_file.data.clone()), data_size) {
+        let img = match Image::load_image_from_mem(
+            ".png",
+            &Vec::from(actual_file.data.clone()),
+            data_size,
+        ) {
             Ok(i) => i,
             Err(_) => return Err(anyhow!("Failed to load image!")),
         };
-    let tex = match rl.load_texture_from_image(thread, &img) {
-        Ok(t) => t,
-        Err(_) => return Err(anyhow!("Failed to load texture from image!")),
-    };
+        tex = match rl.load_texture_from_image(thread, &img) {
+            Ok(t) => t,
+            Err(_) => return Err(anyhow!("Failed to load texture from image!")),
+        };
+    }
     let mut drawing = rl.begin_drawing(thread);
 
     // if we don't do this we get epileptic flashing which isn't cute at all
@@ -83,4 +89,3 @@ pub fn update(rl: &mut RaylibHandle, thread: &RaylibThread) -> Result<()> {
 
     Ok(())
 }
-

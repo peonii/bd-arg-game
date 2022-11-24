@@ -2,27 +2,47 @@ levels:
   - id: start
     bg: bg_day_school.png
     starting_coords:
-      x: 50
-      y: 50
+      x: 500
+      y: 900
     assets:
-      - x: 10
-        y: 10
-        width: 20
-        height: 20
-        connector_to: two
+      - x: 0
+        y: 0
+        width: 1000
+        height: 430
+        connector_to: 
       - x: 0
         y: 0
         width: 1000
         height: 0
         connector_to:
-  - id: two
-    bg: bg_day_school.png
+      - x: 750
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 240
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 1000
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 420
+        y: 0
+        width: 160
+        height: 440
+        connector_to: corridor_1
+  - id: corridor_1
+    bg: cd1_day.png
     starting_coords:
-      x: 50
+      x: 500
       y: 500
     assets:
-      - x: 10
-        y: 10
-        width: 20
-        height: 20
-        connector_to: start
+      - x: 0
+        y: 1000
+        width: 1000
+        height: 0
+        connector_to:
