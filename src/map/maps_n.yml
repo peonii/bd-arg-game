@@ -1,0 +1,339 @@
+levels:
+  - id: start
+    bg: bg_night_school.png
+    starting_coords:
+      x: 500
+      y: 900
+    assets:
+      - x: 0
+        y: 0
+        width: 1000
+        height: 430
+        connector_to: 
+      - x: 0
+        y: 0
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 750
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 240
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 1000
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 420
+        y: 0
+        width: 160
+        height: 440
+        connector_to: corridor_1
+  - id: corridor_1
+    bg: cd1_night.png
+    starting_coords:
+      x: 500
+      y: 550
+    assets:
+      - x: 0
+        y: 535
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 0
+        y: 565
+        width: 1000
+        height: 0
+        connector_to: 
+      - x: 0
+        y: 0
+        width: 0
+        height: 1000
+        connector_to: corridor_2
+      - x: 1000
+        y: 0
+        width: 0
+        height: 1000
+        connector_to: corridor_3
+  - id: corridor_2
+    bg: cd2_night.png
+    starting_coords:
+      x: 500
+      y: 550
+    assets:
+      - x: 180
+        y: 496
+        width: 60
+        height: 39
+        connector_to: classroom_1
+      - x: 473
+        y: 496
+        width: 60
+        height: 39
+        connector_to: classroom_2
+      - x: 767
+        y: 496
+        width: 60
+        height: 39
+        connector_to: classroom_3
+      - x: 0
+        y: 532
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 0
+        y: 565
+        width: 1000
+        height: 0
+        connector_to: 
+      - x: 0
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 1000
+        y: 0
+        width: 0
+        height: 1000
+        connector_to: corridor_1
+  - id: corridor_3
+    bg: cd3_night.png
+    starting_coords:
+      x: 500
+      y: 550
+    assets:
+      - x: 473
+        y: 496
+        width: 60
+        height: 39
+        connector_to: classroom_4
+      - x: 0
+        y: 532
+        width: 1000
+        height: 0
+        connector_to:
+      - x: 0
+        y: 565
+        width: 1000
+        height: 0
+        connector_to: 
+      - x: 1000
+        y: 0
+        width: 0
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 0
+        width: 0
+        height: 1000
+        connector_to: corridor_1
+  - id: classroom_1
+    bg: cls1_night.png
+    starting_coords:
+      x: 500
+      y: 850
+    assets:
+      - x: 386
+        y: 239
+        width: 226
+        height: 572
+        connector_to:
+      - x: 435
+        y: 917
+        width: 118
+        height: 100
+        connector_to: corridor_2
+      - x: 0
+        y: 0
+        width: 78
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 0
+        width: 1000
+        height: 78
+        connector_to:
+      - x: 922
+        y: 0
+        width: 100
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 923
+        width: 1000
+        height: 100
+        connector_to:
+      - x: 119
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 786
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 92
+        y: 119
+        width: 158
+        height: 93
+        connector_to:
+  - id: classroom_2
+    bg: cls2_night.png
+    starting_coords:
+      x: 500
+      y: 850
+    assets:
+      - x: 386
+        y: 239
+        width: 226
+        height: 572
+        connector_to:
+      - x: 435
+        y: 917
+        width: 118
+        height: 100
+        connector_to: corridor_2
+      - x: 0
+        y: 0
+        width: 78
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 0
+        width: 1000
+        height: 78
+        connector_to:
+      - x: 922
+        y: 0
+        width: 100
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 923
+        width: 1000
+        height: 100
+        connector_to:
+      - x: 119
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 786
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 92
+        y: 119
+        width: 158
+        height: 93
+        connector_to:
+  - id: classroom_3
+    bg: cls3_night.png
+    starting_coords:
+      x: 500
+      y: 850
+    assets:
+      - x: 386
+        y: 239
+        width: 226
+        height: 572
+        connector_to:
+      - x: 435
+        y: 917
+        width: 118
+        height: 100
+        connector_to: corridor_2
+      - x: 0
+        y: 0
+        width: 78
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 0
+        width: 1000
+        height: 78
+        connector_to:
+      - x: 922
+        y: 0
+        width: 100
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 923
+        width: 1000
+        height: 100
+        connector_to:
+      - x: 119
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 786
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 92
+        y: 119
+        width: 158
+        height: 93
+        connector_to:
+  - id: classroom_4
+    bg: cls4_night.png
+    starting_coords:
+      x: 500
+      y: 850
+    assets:
+      - x: 386
+        y: 239
+        width: 226
+        height: 572
+        connector_to:
+      - x: 435
+        y: 917
+        width: 118
+        height: 100
+        connector_to: corridor_3
+      - x: 0
+        y: 0
+        width: 78
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 0
+        width: 1000
+        height: 78
+        connector_to:
+      - x: 922
+        y: 0
+        width: 100
+        height: 1000
+        connector_to:
+      - x: 0
+        y: 923
+        width: 1000
+        height: 100
+        connector_to:
+      - x: 119
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 786
+        y: 238
+        width: 93
+        height: 573
+        connector_to:
+      - x: 92
+        y: 119
+        width: 158
+        height: 93
+        connector_to:
